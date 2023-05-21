@@ -1,0 +1,42 @@
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:weatherdb
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+  h2:
+    console:
+      enabled: true
+  config:
+    import: optional:file:.env[.properties]
+weather-stack:
+  api-url: http://api.weatherstack.com/current
+  api-key: ${WEATHER_STACK_API_KEY:default-key}
+  api-call-limit: 30
+  cache-name: weathers
+  cache-ttl: 10000
+resilience4j:
+  ratelimiter:
+    instances:
+      limit:
+        limit-for-period: 10
+        limit-refresh-period: 1m
+        timeout-duration: 10s
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - "*"
+          - prometheus
+
+
+
+
+
+
